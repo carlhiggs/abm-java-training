@@ -1,17 +1,243 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+        <groupId>de.tum.bgu.msm</groupId>
+        <artifactId>training</artifactId>
+        <packaging>pom</packaging>
 
-    <groupId>org.example</groupId>
-    <artifactId>test</artifactId>
-    <version>1.0-SNAPSHOT</version>
+        <version>0.1.0-SNAPSHOT</version>
+        <name>abm-training</name>
 
-    <properties>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+        <licenses>
+            <license>
+                <name>GNU General Public License</name>
+                <url>${basedir}/LICENSE</url>
+            </license>
+        </licenses>
+
+        <repositories>
+            <repository>
+                <id>msm</id>
+                <url>https://dl.cloudsmith.io/public/msmobility/msm/maven/</url>
+                <releases>
+                    <enabled>true</enabled>
+                    <updatePolicy>always</updatePolicy>
+                </releases>
+                <snapshots>
+                    <enabled>true</enabled>
+                    <updatePolicy>always</updatePolicy>
+                </snapshots>
+            </repository>
+            <repository>
+                <id>mito</id>
+                <url>https://dl.cloudsmith.io/public/msmobility/mito/maven/</url>
+                <releases>
+                    <enabled>true</enabled>
+                    <updatePolicy>always</updatePolicy>
+                </releases>
+                <snapshots>
+                    <enabled>true</enabled>
+                    <updatePolicy>always</updatePolicy>
+                </snapshots>
+            </repository>
+            <repository>
+                <id>silo</id>
+                <url>https://dl.cloudsmith.io/public/msmobility/silo/maven/</url>
+                <releases>
+                    <enabled>true</enabled>
+                    <updatePolicy>always</updatePolicy>
+                </releases>
+                <snapshots>
+                    <enabled>true</enabled>
+                    <updatePolicy>always</updatePolicy>
+                </snapshots>
+            </repository>
+            <repository>
+                <id>oss-jfrog-artifactory</id>
+                <name>artifactory-snapshots</name>
+                <url>https://oss.jfrog.org/oss-snapshot-local</url>
+            </repository>
+            <repository>
+                <!-- Geotools is not on Maven central -->
+                <id>osgeo</id>
+                <name>Geotools repository</name>
+                <url>https://repo.osgeo.org/repository/release/</url>
+                <snapshots>
+                    <enabled>false</enabled>
+                </snapshots>
+                <releases>
+                    <enabled>true</enabled>
+                </releases>
+            </repository>
+            <repository>
+                <id>ojo-snapshots</id>
+                <url>https://oss.jfrog.org/libs-snapshot</url>
+            </repository>
+            <repository>
+                <id>matsim</id>
+                <name>MATSim Maven repository</name>
+                <url>https://repo.matsim.org/repository/matsim/</url>
+            </repository>
+
+        </repositories>
+
+        <build>
+            <defaultGoal>compiler:compile</defaultGoal>
+            <resources>
+                <resource>
+                    <directory>src/main/resources</directory>
+                </resource>
+            </resources>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.0</version>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>create</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <doCheck>false</doCheck>
+                        <doUpdate>false</doUpdate>
+                        <revisionOnScmFailure>unknown</revisionOnScmFailure>
+                        <timestampFormat>{0,date,yyyy-MM-dd HH:mm:ss}</timestampFormat>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.13.0</version>
+                    <configuration>
+                        <release>21</release>
+                        <source>21</source>
+                        <target>21</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M5</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>**/*$*</exclude> <!-- exclude all inner classes -->
+                        </excludes>
+
+                        <!--execute each test in separate JVM (slow, but otherwise it does not-->
+                        <!--work, and no problem as long as there are only integration tests):-->
+                        <forkMode>always</forkMode>
+
+                        <!-- avoid out of memory errors: -->
+                        <argLine>-Xmx2000m -Djava.awt.headless=true
+                            -Dmatsim.preferLocalDtds=true</argLine>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+
+        <dependencies>
+            <dependency>
+                <!-- This is the matsim "core": -->
+                <groupId>org.matsim</groupId>
+                <artifactId>matsim</artifactId>
+                <version>${matsim.version}</version>
+            </dependency>
+            <dependency>
+                <!--MATSim test infrastructure.  Not transitive.-->
+                <groupId>org.matsim</groupId>
+                <artifactId>matsim</artifactId>
+                <type>test-jar</type>
+                <version>${matsim.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!--dependencies from here to where stated below are added as a service; they can be removed if you don't need them-->
+            <!--to get ExamplesUtils: -->
+            <dependency>
+                <groupId>org.matsim</groupId>
+                <artifactId>matsim-examples</artifactId>
+                <version>${matsim.version}</version>
+                <!--			<scope>test</scope>-->
+                <!--			I think that having it in the "main" scope is acceptable for a "leaf" project, and makes life easier.  move the-->
+                <!--			matsim-examples dependency into "test" scope if you want to make other projects dependent on your this project here. kai,-->
+                <!--			jan'21-->
+            </dependency>
+
+            <!--some contribs:-->
+            <dependency>
+                <groupId>org.matsim.contrib</groupId>
+                <artifactId>minibus</artifactId>
+                <version>${matsim.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.matsim.contrib</groupId>
+                <artifactId>otfvis</artifactId>
+                <version>${matsim.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.matsim.contrib</groupId>
+                <artifactId>noise</artifactId>
+                <version>${matsim.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.matsim.contrib</groupId>
+                <artifactId>roadpricing</artifactId>
+                <version>${matsim.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.matsim.contrib</groupId>
+                <artifactId>taxi</artifactId>
+                <version>${matsim.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.matsim.contrib</groupId>
+                <artifactId>av</artifactId>
+                <version>${matsim.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.matsim.contrib</groupId>
+                <artifactId>freight</artifactId>
+                <version>${matsim.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.matsim.contrib</groupId>
+                <artifactId>bicycle</artifactId>
+                <version>${matsim.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.matsim.contrib</groupId>
+                <artifactId>emissions</artifactId>
+                <version>14.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.matsim.contrib</groupId>
+                <artifactId>application</artifactId>
+                <version>${matsim.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>2.24.0</version> <!-- Replace with the correct version -->
+            </dependency>
+
+            <!-- Log4j Core -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.24.0</version> <!-- Replace with the correct version -->
+            </dependency>
+        </dependencies>
+
+        <properties>
+            <geotools.version>31.3</geotools.version>
+            <matsim.version>2025.0-PR3643</matsim.version>
+            <jackson.version>2.9.5</jackson.version>
+            <junit.version>5.10.3</junit.version>
+            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        </properties>
 
 </project>
