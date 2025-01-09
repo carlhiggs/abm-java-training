@@ -1,0 +1,21 @@
+GBD_name,acronym,disease,air_pollution_pm25,air_pollution_no2,physical_activity,ap_acronym,pa_acronym,acronym_inJava,outcome,melbourne,manchester,female,male,note
+Alzheimers disease and other dementias,all_cause_dementia,alzheimers disease and other dementias,0,0,1,,,all_cause_dementia,fatal_and_non_fatal,,,,,
+All causes,all_cause_mortality,all causes,1,1,1,,,all_cause_mortality,fatal,,,,,
+Bladder cancer,bladder_cancer,bladder cancer,0,0,1,,,bladder_cancer,fatal_and_non_fatal,,,,,
+Breast cancer,breast_cancer,breast cancer,0,0,1,,,breast_cancer,fatal_and_non_fatal,1,0,1,,colon and rectum cancer
+Colon and rectum cancer,colon_cancer,colon and rectum cancer,0,0,1,,,colon_cancer,fatal_and_non_fatal,,,,,
+,COPD,,1,0,0,,,copd,fatal_and_non_fatal,,,,,
+Ischemic heart disease,coronary_heart_disease,ischemic heart disease,1,0,1,,,coronary_heart_disease,fatal_and_non_fatal,,,,,
+Depressive disorders,depression,depressive disorders,0,0,1,,,depression,fatal_and_non_fatal,,,,,
+Diabetes mellitus type 2,diabetes,diabetes mellitus type 2,0,0,1,,,diabetes,non_fatal,,,,,"only has diabetes_non_fatal in drpa, no diabetes for ap"
+Uterine cancer,endometrial_cancer,uterine cancer,0,0,1,,,endometrial_cancer,fatal_and_non_fatal,,,1,,
+Esophageal cancer,esophageal_cancer,esophageal cancer,0,0,1,,,esophageal_cancer,fatal_and_non_fatal,,,,,
+Stomach cancer,gastric_cardia_cancer,stomach cancer,0,0,1,,,gastric_cardia_cancer,fatal_and_non_fatal,,,,,
+head and neck cancer,head_and_neck_cancer,head and neck cancer,0,0,1,,,head_neck_cancer,fatal_and_non_fatal,,,,,
+Liver cancer,liver_cancer,liver cancer,0,0,1,,,liver_cancer,fatal_and_non_fatal,,,,,
+Tracheal bronchus and lung cancer,lung_cancer,Tracheal bronchus and lung cancer,1,0,1,,,lung_cancer,fatal_and_non_fatal,1,0,,,Tracheal bronchus and lung cancer
+Chronic myeloid leukemia,myeloid_leukemia,chronic myeloid leukemia,0,0,1,,,myeloid_leukemia,fatal_and_non_fatal,,,,,
+Multiple myeloma,myeloma,multiple myeloma,0,0,1,,,myeloma,fatal_and_non_fatal,,,,,
+Parkinsons disease,parkinson's_disease,parkinsons disease,0,0,1,,,parkinson,fatal_and_non_fatal,,,,,
+Rectum cancer,rectum_cancer,rectum cancer,0,0,0,,,rectum_cancer,fatal_and_non_fatal,1,0,,,colon and rectum cancer
+Stroke,stroke,stroke,1,0,1,,,stroke,fatal_and_non_fatal,,,,,
