@@ -37,6 +37,7 @@ build/
 ### Mac OS ###
 .DS_Store
 /out/
-/output/
+**/output/
+**/scenOutput/
 /.idea/
 /input/

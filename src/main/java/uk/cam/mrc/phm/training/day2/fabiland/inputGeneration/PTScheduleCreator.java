@@ -37,10 +37,10 @@ public class PTScheduleCreator {
         //String scenarioName = "_1-l_nes";
         //String scenarioName = "_1-l_ring";
 
-        String inputNetwork = "useCases/fabiland/scenario/matsimInput/nw_cap240.xml";
-        String outputNetwork = "useCases/fabiland/scenario/matsimInput/nw_cap240" + scenarioName + ".xml";
-        String outputPTSchedule = "useCases/fabiland/scenario/matsimInput/ts" + scenarioName + ".xml";
-        String outputPTVehicles = "useCases/fabiland/scenario/matsimInput/tv" + scenarioName + ".xml";
+        String inputNetwork = "scenarios/fabiland/matsimInput/nw_cap60.xml";
+        String outputNetwork = "scenarios/fabiland/matsimInput/nw_cap60" + scenarioName + ".xml";
+        String outputPTSchedule = "scenarios/fabiland/matsimInput/ts" + scenarioName + ".xml";
+        String outputPTVehicles = "scenarios/fabiland/matsimInput/tv" + scenarioName + ".xml";
 
         createSchedule(inputNetwork, outputNetwork, outputPTSchedule, outputPTVehicles);
     }

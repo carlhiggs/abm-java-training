@@ -33,9 +33,9 @@ public class CreateNetwork {
      * (21)----(22)-----(23)-----(24)-----(25)
      */
     public static void main(String[] args) {
-        String networkFileName = "scenarios/fabiland/matsimInput/nw_cap30.xml";
+        String networkFileName = "scenarios/fabiland/matsimInput/nw_cap60.xml";
         double freespeed = 50./3.6;
-        double capacity = 30.;
+        double capacity = 60.;
         double numLanes = 1.;
         double length = 5000.;
 
