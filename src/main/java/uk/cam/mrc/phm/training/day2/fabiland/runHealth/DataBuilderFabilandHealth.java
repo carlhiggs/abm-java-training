@@ -11,23 +11,16 @@ import de.tum.bgu.msm.data.geo.GeoData;
 import de.tum.bgu.msm.data.household.*;
 import de.tum.bgu.msm.data.job.*;
 import de.tum.bgu.msm.data.person.PersonFactory;
-import de.tum.bgu.msm.data.person.PersonFactoryImpl;
 import de.tum.bgu.msm.data.travelTimes.SkimTravelTimes;
 import de.tum.bgu.msm.data.travelTimes.TravelTimes;
-import de.tum.bgu.msm.health.HealthDataContainerImpl;
-import de.tum.bgu.msm.health.data.DataContainerHealth;
-import de.tum.bgu.msm.health.diseaseModelOffline.HealthExposuresReader;
 import de.tum.bgu.msm.health.io.DoseResponseLookupReader;
 import de.tum.bgu.msm.health.io.HealthTransitionTableReader;
 import de.tum.bgu.msm.io.input.*;
 import de.tum.bgu.msm.matsim.MatsimTravelTimesAndCosts;
 import de.tum.bgu.msm.properties.Properties;
-import de.tum.bgu.msm.schools.DataContainerWithSchools;
-import de.tum.bgu.msm.schools.DataContainerWithSchoolsImpl;
 import org.matsim.core.config.Config;
-import uk.cam.mrc.phm.training.day2.fabiland.data.FabilandHealthDataContainer;
-import uk.cam.mrc.phm.training.day2.fabiland.data.OnTheFlyCommutingTimeProbability;
-import uk.cam.mrc.phm.training.day2.fabiland.data.SandboxDwellingTypes;
+import uk.cam.mrc.phm.training.day2.fabiland.data.*;
+import uk.cam.mrc.phm.training.day2.fabiland.io.PersonReaderFabiland;
 
 public class DataBuilderFabilandHealth {
 
@@ -77,7 +70,7 @@ public class DataBuilderFabilandHealth {
                 travelTimes, commutingTimeProbability);
 
         final HouseholdFactory hhFactory = new HouseholdFactoryImpl();
-        final PersonFactory ppFactory = new PersonFactoryImpl();
+        final PersonFactoryFabiland ppFactory = new PersonFactoryFabiland();
 
         HouseholdDataManager householdManager = new HouseholdDataManagerImpl(
                 householdData, dwellingData,
@@ -135,7 +128,7 @@ public class DataBuilderFabilandHealth {
     private static void readPersons(Properties properties, HouseholdDataManager householdData, PersonFactory ppFactory, int year) {
         String personFile = properties.main.baseDirectory + properties.householdData.personFileName;
         personFile += "_" + year + ".csv";
-        PersonReader personReader = new DefaultPersonReader(householdData);
+        PersonReader personReader = new PersonReaderFabiland(householdData);
         personReader.readData(personFile);
     }
 

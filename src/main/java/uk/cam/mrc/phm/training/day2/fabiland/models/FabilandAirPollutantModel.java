@@ -9,6 +9,7 @@ import de.tum.bgu.msm.health.airPollutant.dispersion.EmissionSpatialDispersion;
 import de.tum.bgu.msm.health.airPollutant.dispersion.Grid;
 import de.tum.bgu.msm.health.airPollutant.emission.CreateVehicles;
 import de.tum.bgu.msm.health.data.DataContainerHealth;
+import de.tum.bgu.msm.health.data.LinkInfo;
 import de.tum.bgu.msm.health.io.LinkInfoWriter;
 import de.tum.bgu.msm.models.AbstractModel;
 import de.tum.bgu.msm.models.ModelUpdateListener;
@@ -17,6 +18,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
+import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.contrib.emissions.EmissionModule;
@@ -59,6 +62,18 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
 
     @Override
     public void setup() {
+        Scenario scenario = ScenarioUtils.loadScenario(initialMatsimConfig);
+        Map<Id<Link>, LinkInfo> linkInfoMap = new HashMap<>();
+        for(Link link : scenario.getNetwork().getLinks().values()){
+            linkInfoMap.put(link.getId(), new LinkInfo(link.getId()));
+        }
+        ((DataContainerHealth)dataContainer).setLinkInfo(linkInfoMap);
+        logger.info("Initialized Link Info for " +  ((DataContainerHealth)dataContainer).getLinkInfo().size() + " links ");
+
+        for(Zone zone : dataContainer.getGeoData().getZones().values()){
+            Map<Pollutant, OpenIntFloatHashMap> pollutantMap = new HashMap<>();
+            ((DataContainerHealth)dataContainer).getZoneExposure2Pollutant2TimeBin().put(zone, pollutantMap);
+        }
     }
 
     @Override
@@ -94,16 +109,13 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
             outputDirectoryRoot = properties.main.baseDirectory + "scenOutput/"
                     + properties.main.scenarioName + "/matsim/" + latestMatsimYear;
             config = ConfigUtils.loadConfig(initialMatsimConfig.getContext());
-            //need to use full network (include all car, active mode links) for dispersion, need to have hbefa type for emission model
-            String networkFile = properties.main.baseDirectory + properties.healthData.network_for_airPollutant_model;
-            config.network().setInputFile(networkFile);
             config.controller().setOutputDirectory(outputDirectoryRoot);
 
             scenario = ScenarioUtils.loadScenario(config);
             runEmissionGridAnalyzer(year, eventFileWithEmissions, 1.);
 
             String outputDirectory = properties.main.baseDirectory + "scenOutput/" + properties.main.scenarioName + "/";
-            new LinkInfoWriter().writeData((DataContainerHealth) dataContainer, outputDirectory, null, "car");
+            new LinkInfoWriter().writeData((DataContainerHealth) dataContainer, outputDirectory, Day.thursday, "car");
             System.gc();
         }
     }
@@ -152,8 +164,6 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
         emissionsConfig.setAverageColdEmissionFactorsFile(Properties.get().main.baseDirectory+ Properties.get().healthData.COLD_EMISSION_FILE);
         emissionsConfig.setAverageWarmEmissionFactorsFile(Properties.get().main.baseDirectory+ Properties.get().healthData.HOT_EMISSION_FILE);
         emissionsConfig.setNonScenarioVehicles(EmissionsConfigGroup.NonScenarioVehicles.ignore);
-        //TODO: check how the hbefa road type is determined inside matsim in version 2025.0
-        emissionsConfig.setHbefaRoadTypeSource(EmissionsConfigGroup.HbefaRoadTypeSource.fromLinkAttributes);
         emissionsConfig.setHbefaVehicleDescriptionSource(EmissionsConfigGroup.HbefaVehicleDescriptionSource.fromVehicleTypeDescription);
         scenario.getConfig().addModule(emissionsConfig);
         return scenario.getConfig();
@@ -174,8 +184,6 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
 
         logger.info("Apply scale factor: " + scalingFactor + " to emission grid analyzer.");
 
-        System.out.println("current memory usage: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
-
         EmissionSpatialDispersion gridAnalyzer =	new	EmissionSpatialDispersion.Builder()
                 .withNetwork(scenario.getNetwork())
                 .withTimeBinSize(EMISSION_TIME_BIN_SIZE)
@@ -184,25 +192,26 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
                 .withCountScaleFactor(1./scalingFactor)
                 .withGridType(EmissionSpatialDispersion.GridType.Square)
                 .build();
-        System.out.println("current memory usage: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 
         gridAnalyzer.processTimeBinsWithEmissions(eventsFileWithEmission);
-        System.out.println("current memory usage: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+
+        List<Coordinate> coordinates = new ArrayList<>();
+        for(Zone zone : dataContainer.getGeoData().getZones().values()){
+            Coordinate centroid = ((Geometry) (zone.getZoneFeature().getDefaultGeometry())).getCentroid().getCoordinate();
+            coordinates.add(centroid);
+        }
 
         while(gridAnalyzer.hasNextTimeBin()){
-            assembleLinkZoneConcentration(year, gridAnalyzer.processNextTimeBin(dataContainer.getGeoData().getZones().values().stream().map(Zone ::getPopCentroidCoord).collect(Collectors.toList())));
+            assembleLinkZoneConcentration(year, gridAnalyzer.processNextTimeBin(coordinates));
         }
-        System.out.println("current memory usage: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 
     }
 
     private void assembleLinkZoneConcentration(int year, Tuple<Double, Grid<Map<Pollutant, Float>>>  gridEmissionMap) {
-        logger.warn("Updating link air pollutant exposure for year: " + year + "| time of day: " + gridEmissionMap.getFirst() + ".");
+        logger.info("Updating link air pollutant exposure for year: " + year + "| time of day: " + gridEmissionMap.getFirst() + ".");
         int startTime = (int) Math.floor(gridEmissionMap.getFirst());
-        System.out.println("current memory usage: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 
         Grid<Map<Pollutant,	Float>> grid =	gridEmissionMap.getSecond();
-        System.out.println("current memory usage: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 
         for(Link link : scenario.getNetwork().getLinks().values()){
             Map<Pollutant, OpenIntFloatHashMap> exposure2Pollutant2TimeBin =  ((DataContainerHealth)dataContainer).getLinkInfo().get(link.getId()).getExposure2Pollutant2TimeBin();
@@ -241,12 +250,6 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
             ((DataContainerHealth)dataContainer).getLinkInfo().get(link.getId()).setExposure2Pollutant2TimeBin(exposure2Pollutant2TimeBin);
         }
 
-        System.out.println("current memory usage: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
-
-        logger.warn("Updating link air pollutant exposure for year: " + year + " finished.");
-
-        logger.warn("Updating Zonal air pollutant exposure for year: " + year + "| time of day: " + gridEmissionMap.getFirst() + ".");
-
         for(Zone zone :dataContainer.getGeoData().getZones().values()){
             Map<Pollutant, OpenIntFloatHashMap> exposure2Pollutant2TimeBin =  ((DataContainerHealth)dataContainer).getZoneExposure2Pollutant2TimeBin().getOrDefault(zone, new HashMap<>());
 
@@ -268,7 +271,7 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
             ((DataContainerHealth)dataContainer).getZoneExposure2Pollutant2TimeBin().put(zone, exposure2Pollutant2TimeBin);
         }
 
-        logger.warn("Updating Zonal air pollutant exposure for year: " + year + "| time of day: " + gridEmissionMap.getFirst() + "finished.");
+        logger.info("Updating air pollutant exposure for year: " + year + "| time of day: " + gridEmissionMap.getFirst() + "finished.");
 
     }
 }

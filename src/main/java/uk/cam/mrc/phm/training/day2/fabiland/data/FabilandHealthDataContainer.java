@@ -30,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.contrib.emissions.Pollutant;
+import uk.cam.mrc.phm.training.day2.fabiland.io.PersonWriterFabiland;
 
 import java.util.*;
 
@@ -133,7 +134,7 @@ public class FabilandHealthDataContainer implements DataContainerHealth {
                 + "_exposure_"
                 + year
                 + ".csv";
-        new HealthPersonWriter(this).writePersonExposure(filepp);
+        new PersonWriterFabiland(this).writePersonExposure(filepp);
     }
 
     public void writePersonRelativeRiskData(int year) {

@@ -52,6 +52,7 @@ import de.tum.bgu.msm.utils.SiloUtil;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.core.config.Config;
 import org.matsim.core.scenario.ScenarioUtils;
+import uk.cam.mrc.phm.training.day2.fabiland.data.PersonFactoryFabiland;
 import uk.cam.mrc.phm.training.day2.fabiland.models.FabilandAirPollutantModel;
 import uk.cam.mrc.phm.training.day2.fabiland.models.FabilandConstructionLocationStrategy;
 
@@ -63,7 +64,7 @@ public class ModelBuilderFabilandHealth {
 
     public static ModelContainer getModelContainer(DataContainer dataContainer, Properties properties, Config config) {
 
-        PersonFactory ppFactory = dataContainer.getHouseholdDataManager().getPersonFactory();
+        PersonFactoryFabiland ppFactory = (PersonFactoryFabiland) dataContainer.getHouseholdDataManager().getPersonFactory();
         HouseholdFactory hhFactory = dataContainer.getHouseholdDataManager().getHouseholdFactory();
         DwellingFactory ddFactory = dataContainer.getRealEstateDataManager().getDwellingFactory();
 
