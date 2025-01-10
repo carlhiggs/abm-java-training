@@ -55,6 +55,8 @@ import org.matsim.core.scenario.ScenarioUtils;
 import uk.cam.mrc.phm.training.day2.fabiland.data.PersonFactoryFabiland;
 import uk.cam.mrc.phm.training.day2.fabiland.models.FabilandAirPollutantModel;
 import uk.cam.mrc.phm.training.day2.fabiland.models.FabilandConstructionLocationStrategy;
+import uk.cam.mrc.phm.training.day2.fabiland.models.FabilandHealthExposureModel;
+
 
 import java.util.Random;
 
@@ -154,9 +156,9 @@ public class ModelBuilderFabilandHealth {
 
         modelContainer.registerModelUpdateListener(new FabilandAirPollutantModel(dataContainer, properties, SiloUtil.provideNewRandom(),config));
 
-        //modelContainer.registerModelUpdateListener(new HealthExposureModelMCR(dataContainer, properties, SiloUtil.provideNewRandom(),config));
+        modelContainer.registerModelUpdateListener(new FabilandHealthExposureModel(dataContainer, properties, SiloUtil.provideNewRandom(),config));
 
-        //modelContainer.registerModelUpdateListener(new DiseaseModelMCR(dataContainer, properties, SiloUtil.provideNewRandom()));
+        //modelContainer.registerModelUpdateListener(new FabilandDiseaseModel(dataContainer, properties, SiloUtil.provideNewRandom()));
 
 
         return modelContainer;

@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 
 public class PersonWriterFabiland implements PersonWriter {
 
-    private final static Logger logger = LogManager.getLogger(HealthPersonWriter.class);
+    private final static Logger logger = LogManager.getLogger(PersonWriterFabiland.class);
     protected final DataContainer dataContainer;
     private final HouseholdDataManager householdData;
 

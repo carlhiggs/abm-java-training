@@ -45,7 +45,7 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
     private static final double EMISSION_GRID_SIZE = 20;
     private static final double EMISSION_SMOOTH_RADIUS = 100;
     private int latestMatsimYear = -1;
-    private static final Logger logger = LogManager.getLogger(AirPollutantModel.class);
+    private static final Logger logger = LogManager.getLogger(FabilandAirPollutantModel.class);
     private Scenario scenario;
     private final Config initialMatsimConfig;
     private final Set<Pollutant> pollutantSet = new HashSet<>();
@@ -83,7 +83,7 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
     @Override
     public void endYear(int year) {
         logger.warn("Air pollutant exposure model end year:" + year);
-        if(properties.main.startYear == year) {
+        if(properties.main.startYear == year || properties.transportModel.transportModelYears.contains(year)) {
             //car emission
             latestMatsimYear = year;
             String outputDirectoryRoot = properties.main.baseDirectory + "scenOutput/"
@@ -116,7 +116,6 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
 
             String outputDirectory = properties.main.baseDirectory + "scenOutput/" + properties.main.scenarioName + "/";
             new LinkInfoWriter().writeData((DataContainerHealth) dataContainer, outputDirectory, Day.thursday, "car");
-            System.gc();
         }
     }
 

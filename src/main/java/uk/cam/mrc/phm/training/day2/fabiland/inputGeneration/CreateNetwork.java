@@ -71,6 +71,7 @@ public class CreateNetwork {
 
         Set<String> carModeSet = new HashSet<>();
         carModeSet.add(TransportMode.car);
+        carModeSet.add(TransportMode.walk);
 
         // Links (bi-directional)
         NetworkUtils.createAndAddLink(network,Id.create("0102", Link.class), node1, node2, length, freespeed, capacity, numLanes);

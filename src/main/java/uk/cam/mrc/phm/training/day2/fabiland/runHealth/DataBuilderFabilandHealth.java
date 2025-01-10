@@ -101,6 +101,7 @@ public class DataBuilderFabilandHealth {
         String jobsFile = properties.main.baseDirectory + properties.jobData.jobsFileName + "_" + year + ".csv";
         jjReader.readData(jobsFile);
 
+        dataContainer.setAvgSpeeds(new DefaultSpeedReader().readData(properties.main.baseDirectory + properties.healthData.avgSpeedFile));
         dataContainer.setHealthTransitionData(new HealthTransitionTableReader().readData(dataContainer,properties.main.baseDirectory + properties.healthData.healthTransitionData));
         DoseResponseLookupReader doseResponseReader = new DoseResponseLookupReader();
         doseResponseReader.readData(properties.main.baseDirectory + properties.healthData.basePath);

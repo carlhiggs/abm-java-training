@@ -101,20 +101,16 @@ public class FabilandHealthDataContainer implements DataContainerHealth {
     @Override
     public void endYear(int year) {
         delegate.endYear(year);
-        if (year == properties.main.startYear || properties.healthData.exposureModelYears.contains(year)) {
+        if (year == properties.main.startYear || properties.transportModel.transportModelYears.contains(year)) {
             writePersonExposureData(year);
-            writePersonRelativeRiskData(year);
+            //writePersonRelativeRiskData(year);
         }
-        writePersonDiseaseTrackData(year);
+        //writePersonDiseaseTrackData(year);
     }
 
     @Override
     public void endSimulation() {
         delegate.endSimulation();
-        writeDwellingsWithNoise(properties.main.endYear);
-        //writePersonExposureData(properties.main.endYear);
-        //writePersonRelativeRiskData(properties.main.endYear);
-        //writePersonDiseaseTrackData(properties.main.endYear);
     }
 
     private void writePersonDiseaseTrackData(int year) {
@@ -144,7 +140,7 @@ public class FabilandHealthDataContainer implements DataContainerHealth {
                 + "_rr_"
                 + year
                 + ".csv";
-        new HealthPersonWriter(this).writePersonRelativeRisk(filepp);
+        new PersonWriterFabiland(this).writePersonRelativeRisk(filepp);
     }
 
     private void writeDwellingsWithNoise(int year) {
