@@ -4,7 +4,6 @@ import cern.colt.map.tfloat.OpenIntFloatHashMap;
 import de.tum.bgu.msm.container.DataContainer;
 import de.tum.bgu.msm.data.Day;
 import de.tum.bgu.msm.data.Zone;
-import de.tum.bgu.msm.health.airPollutant.AirPollutantModel;
 import de.tum.bgu.msm.health.airPollutant.dispersion.EmissionSpatialDispersion;
 import de.tum.bgu.msm.health.airPollutant.dispersion.Grid;
 import de.tum.bgu.msm.health.airPollutant.emission.CreateVehicles;
@@ -18,7 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Point;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.network.Link;
@@ -36,7 +34,6 @@ import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.core.utils.collections.Tuple;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.matsim.core.controler.Injector.createInjector;
 
@@ -83,7 +80,7 @@ public class FabilandAirPollutantModel extends AbstractModel implements ModelUpd
     @Override
     public void endYear(int year) {
         logger.warn("Air pollutant exposure model end year:" + year);
-        if(properties.main.startYear == year || properties.transportModel.transportModelYears.contains(year)) {
+        if(properties.main.startYear == year || properties.healthData.exposureModelYears.contains(year)) {
             //car emission
             latestMatsimYear = year;
             String outputDirectoryRoot = properties.main.baseDirectory + "scenOutput/"

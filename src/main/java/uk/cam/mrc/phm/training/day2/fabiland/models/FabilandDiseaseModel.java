@@ -110,8 +110,8 @@ public class FabilandDiseaseModel extends AbstractModel implements ModelUpdateLi
                     continue;
                 }
 
-                int zoneId = dataContainer.getRealEstateDataManager().getDwelling(person.getHousehold().getDwellingId()).getZoneId();
-                String location = ((ZoneMCR)dataContainer.getGeoData().getZones().get(zoneId)).getLsoaCode();
+                //all zones have same transition data
+                String location = "1";
                 String compositeKey = ((DataContainerHealth) dataContainer).createTransitionLookupIndex(Math.min(person.getAge(), 100), person.getGender(), location);
                 if (((DataContainerHealth) dataContainer).getHealthTransitionData().get(diseases).get(compositeKey)==null){
                     logger.warn("No health transition data for disease: " + diseases + "| " + compositeKey);
@@ -123,6 +123,15 @@ public class FabilandDiseaseModel extends AbstractModel implements ModelUpdateLi
 
                 if(adjustByRelativeRisk){
                     for(HealthExposures exposures : HealthExposures.values()){
+
+                        if(((PersonHealth) person).getRelativeRisksByDisease()==null){
+                            System.out.println("1");
+                        }
+
+                        if(((PersonHealth) person).getRelativeRisksByDisease().get(exposures)==null){
+                            System.out.println("1");
+                        }
+
                         sickProb *= ((PersonHealth) person).getRelativeRisksByDisease().get(exposures).getOrDefault(diseases, 1.f);
                     }
                 }

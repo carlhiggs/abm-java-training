@@ -58,7 +58,7 @@ public class FabilandHealthExposureModel extends AbstractModel implements ModelU
 
     @Override
     public void endYear(int year) {
-        if(properties.main.startYear == year || properties.transportModel.transportModelYears.contains(year)) {
+        if(properties.main.startYear == year || properties.healthData.exposureModelYears.contains(year)) {
             logger.warn("Health model end year:" + year);
             latestMatsimYear = year;
 
@@ -144,11 +144,16 @@ public class FabilandHealthExposureModel extends AbstractModel implements ModelU
                             logger.info(counterr + " in " + id);
                         }
 
+                        if(dataContainer.getHouseholdDataManager().getPersonFromId(trip.getPerson())==null){
+                            logger.warn("Person " + trip.getPerson() + " not found in database.");
+                            continue;
+                        }
+
                         Node originNode = NetworkUtils.getNearestNode(scenario.getNetwork(), trip.getTripOrigin());
                         Node destinationNode = NetworkUtils.getNearestNode(scenario.getNetwork(), trip.getTripDestination());
 
                         int outboundDepartureTimeInSeconds = trip.getDepartureTimeInMinutes()*60;
-                        org.matsim.api.core.v01.population.Person person = factory.createPerson(Id.createPersonId(trip.getId()));
+                        org.matsim.api.core.v01.population.Person person = factory.createPerson(Id.createPersonId(trip.getPerson()));
 
 
                         LeastCostPathCalculator.Path outboundPath = pathCalculator.calcLeastCostPath(originNode, destinationNode,outboundDepartureTimeInSeconds,person,null);

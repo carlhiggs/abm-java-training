@@ -101,11 +101,11 @@ public class FabilandHealthDataContainer implements DataContainerHealth {
     @Override
     public void endYear(int year) {
         delegate.endYear(year);
-        if (year == properties.main.startYear || properties.transportModel.transportModelYears.contains(year)) {
+        if (year == properties.main.startYear || properties.healthData.exposureModelYears.contains(year)) {
             writePersonExposureData(year);
-            //writePersonRelativeRiskData(year);
+            writePersonRelativeRiskData(year);
         }
-        //writePersonDiseaseTrackData(year);
+        writePersonDiseaseTrackData(year);
     }
 
     @Override

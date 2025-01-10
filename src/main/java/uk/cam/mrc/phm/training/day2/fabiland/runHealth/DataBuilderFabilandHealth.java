@@ -20,6 +20,7 @@ import de.tum.bgu.msm.matsim.MatsimTravelTimesAndCosts;
 import de.tum.bgu.msm.properties.Properties;
 import org.matsim.core.config.Config;
 import uk.cam.mrc.phm.training.day2.fabiland.data.*;
+import uk.cam.mrc.phm.training.day2.fabiland.io.HealthTransitionTableReaderFabiland;
 import uk.cam.mrc.phm.training.day2.fabiland.io.PersonReaderFabiland;
 
 public class DataBuilderFabilandHealth {
@@ -102,7 +103,7 @@ public class DataBuilderFabilandHealth {
         jjReader.readData(jobsFile);
 
         dataContainer.setAvgSpeeds(new DefaultSpeedReader().readData(properties.main.baseDirectory + properties.healthData.avgSpeedFile));
-        dataContainer.setHealthTransitionData(new HealthTransitionTableReader().readData(dataContainer,properties.main.baseDirectory + properties.healthData.healthTransitionData));
+        dataContainer.setHealthTransitionData(new HealthTransitionTableReaderFabiland().readData(dataContainer,properties.main.baseDirectory + properties.healthData.healthTransitionData));
         DoseResponseLookupReader doseResponseReader = new DoseResponseLookupReader();
         doseResponseReader.readData(properties.main.baseDirectory + properties.healthData.basePath);
         dataContainer.setDoseResponseData(doseResponseReader.getDoseResponseData());

@@ -33,7 +33,6 @@ public class TripReader {
 
             // read header
             String[] header = recString.split(";");
-            int posId = SiloUtil.findPositionInArray("trip_number", header);
             int posOriginX = SiloUtil.findPositionInArray("start_x", header);
             int posOriginY = SiloUtil.findPositionInArray("start_y", header);
             int posDestinationX = SiloUtil.findPositionInArray("end_x", header);
@@ -47,18 +46,17 @@ public class TripReader {
             while ((recString = in.readLine()) != null) {
                 recCount++;
                 String[] lineElements = recString.split(";");
-                int id = Integer.parseInt(lineElements[posId]);
 
                 Trip trip;
-                if(!allTrips.containsKey(id)) {
+                if(!allTrips.containsKey(recCount)) {
                     trip = new Trip(recCount);
                 }else{
-                    logger.warn("Trip id: " + id + " already exists in the trip list!");
+                    logger.warn("Trip id: " + recCount + " already exists in the trip list!");
                     continue;
                 }
 
                 if(lineElements[posOriginX].equals("null")||lineElements[posDestinationX].equals("null")){
-                    logger.warn("trip id: " + id + "no origin or destination microlocation!");
+                    logger.warn("trip id: " + recCount + "no origin or destination microlocation!");
                 }
 
                 trip.setTripOrigin(CoordUtils.createCoord(Double.parseDouble(lineElements[posOriginX]),Double.parseDouble(lineElements[posOriginY])));
@@ -78,7 +76,7 @@ public class TripReader {
 
                 trip.setDepartureInMinutes(totalMinutes);
 
-                allTrips.put(id,trip);
+                allTrips.put(recCount,trip);
             }
 
             // Close the reader after usage

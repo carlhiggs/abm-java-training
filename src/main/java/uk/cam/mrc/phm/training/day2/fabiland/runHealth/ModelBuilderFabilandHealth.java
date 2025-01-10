@@ -1,20 +1,17 @@
 package uk.cam.mrc.phm.training.day2.fabiland.runHealth;
 
-import de.tum.bgu.msm.container.DataContainer;
 import de.tum.bgu.msm.container.ModelContainer;
 import de.tum.bgu.msm.data.dwelling.DwellingFactory;
 import de.tum.bgu.msm.data.household.Household;
 import de.tum.bgu.msm.data.household.HouseholdFactory;
-import de.tum.bgu.msm.data.person.PersonFactory;
+import de.tum.bgu.msm.health.DeathModelMCR;
 import de.tum.bgu.msm.matsim.*;
+import de.tum.bgu.msm.models.InOutMigrationMCR;
 import de.tum.bgu.msm.models.autoOwnership.CreateCarOwnershipModel;
-import de.tum.bgu.msm.models.demography.birth.BirthModelImpl;
 import de.tum.bgu.msm.models.demography.birth.DefaultBirthStrategy;
 import de.tum.bgu.msm.models.demography.birthday.BirthdayModel;
 import de.tum.bgu.msm.models.demography.birthday.BirthdayModelImpl;
 import de.tum.bgu.msm.models.demography.death.DeathModel;
-import de.tum.bgu.msm.models.demography.death.DeathModelImpl;
-import de.tum.bgu.msm.models.demography.death.DefaultDeathStrategy;
 import de.tum.bgu.msm.models.demography.divorce.DefaultDivorceStrategy;
 import de.tum.bgu.msm.models.demography.divorce.DivorceModel;
 import de.tum.bgu.msm.models.demography.divorce.DivorceModelImpl;
@@ -52,10 +49,9 @@ import de.tum.bgu.msm.utils.SiloUtil;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.core.config.Config;
 import org.matsim.core.scenario.ScenarioUtils;
+import uk.cam.mrc.phm.training.day2.fabiland.data.FabilandHealthDataContainer;
 import uk.cam.mrc.phm.training.day2.fabiland.data.PersonFactoryFabiland;
-import uk.cam.mrc.phm.training.day2.fabiland.models.FabilandAirPollutantModel;
-import uk.cam.mrc.phm.training.day2.fabiland.models.FabilandConstructionLocationStrategy;
-import uk.cam.mrc.phm.training.day2.fabiland.models.FabilandHealthExposureModel;
+import uk.cam.mrc.phm.training.day2.fabiland.models.*;
 
 
 import java.util.Random;
@@ -64,17 +60,17 @@ import static de.tum.bgu.msm.matsim.SimpleCommuteModeChoiceMatsimScenarioAssembl
 
 public class ModelBuilderFabilandHealth {
 
-    public static ModelContainer getModelContainer(DataContainer dataContainer, Properties properties, Config config) {
+    public static ModelContainer getModelContainer(FabilandHealthDataContainer dataContainer, Properties properties, Config config) {
 
         PersonFactoryFabiland ppFactory = (PersonFactoryFabiland) dataContainer.getHouseholdDataManager().getPersonFactory();
         HouseholdFactory hhFactory = dataContainer.getHouseholdDataManager().getHouseholdFactory();
         DwellingFactory ddFactory = dataContainer.getRealEstateDataManager().getDwellingFactory();
 
-        final BirthModelImpl birthModel = new BirthModelImpl(dataContainer, ppFactory, properties, new DefaultBirthStrategy(), SiloUtil.provideNewRandom());
+        final BirthModelFabiland birthModel = new BirthModelFabiland(dataContainer, ppFactory, properties, new DefaultBirthStrategy(), SiloUtil.provideNewRandom());
 
         BirthdayModel birthdayModel = new BirthdayModelImpl(dataContainer, properties, SiloUtil.provideNewRandom());
 
-        DeathModel deathModel = new DeathModelImpl(dataContainer, properties, new DefaultDeathStrategy(), SiloUtil.provideNewRandom());
+        DeathModel deathModel = new DeathModelMCR(dataContainer, properties, new DeathStrategyFabiland(dataContainer, properties.healthData.adjustByRelativeRisk), SiloUtil.provideNewRandom());
 
         MovesModelImpl movesModel = new MovesModelImpl(
                 dataContainer, properties,
@@ -115,7 +111,7 @@ public class ModelBuilderFabilandHealth {
 
         ConstructionOverwrite constructionOverwrite = new ConstructionOverwriteImpl(dataContainer, ddFactory, properties, SiloUtil.provideNewRandom());
 
-        InOutMigration inOutMigration = new InOutMigrationImpl(dataContainer, employmentModel, movesModel,
+        InOutMigration inOutMigration = new InOutMigrationMCR(dataContainer, employmentModel, movesModel,
                 carOwnershipModel, driversLicenseModel, properties, SiloUtil.provideNewRandom());
 
         DemolitionModel demolition = new DemolitionModelImpl(dataContainer, movesModel,
@@ -158,8 +154,7 @@ public class ModelBuilderFabilandHealth {
 
         modelContainer.registerModelUpdateListener(new FabilandHealthExposureModel(dataContainer, properties, SiloUtil.provideNewRandom(),config));
 
-        //modelContainer.registerModelUpdateListener(new FabilandDiseaseModel(dataContainer, properties, SiloUtil.provideNewRandom()));
-
+        modelContainer.registerModelUpdateListener(new FabilandDiseaseModel(dataContainer, properties, SiloUtil.provideNewRandom()));
 
         return modelContainer;
     }
