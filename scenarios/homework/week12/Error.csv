@@ -1,0 +1,3 @@
+ErrorId,ErrorType,ErrorMessage
+1,checked,file not found
+2,unchecked,null pointer
