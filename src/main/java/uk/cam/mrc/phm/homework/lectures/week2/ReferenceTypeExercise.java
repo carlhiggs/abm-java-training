@@ -27,6 +27,8 @@ public class ReferenceTypeExercise {
         } else {
             System.out.println("different in heap memory");
         }
-
+        // this is a very important exercise
+        // most often, you probably would want to use .equals() to evaluate equality
+        // as you are not interested in the superficial difference, but the difference in content
     }
 }

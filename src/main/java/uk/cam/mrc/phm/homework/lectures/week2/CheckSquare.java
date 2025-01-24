@@ -1,6 +1,6 @@
 package uk.cam.mrc.phm.homework.lectures.week2;
 
-public class ExtractMethodExercise2 {
+public class CheckSquare {
     public static void main(String[] args) {
         //Todo IntelliJ has many user-friendly function to deal with code including extracting method
 
@@ -9,6 +9,12 @@ public class ExtractMethodExercise2 {
         //Todo using mouse to select the chuck of the code that need to be in a method
         //Todo right click on your mouse and select Refactor/Extract Method and then input a descriptive method name
         //Todo rename class name and method name can be done by Refactor/Rename
+        checkSquare(122);
+        checkSquare(9);
+        checkSquare(87);
+    }
+
+    private static void checkSquare(long val) {
         for (int i = 1; ; i++) {
 
             if (i * i == val) {

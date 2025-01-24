@@ -7,8 +7,8 @@ public class CastingExercise {
         double result1 = 10/3;
         double result2 = (double) 10 / (double) 3;
 
-        System.out.println("Result1: " + result1);
-        System.out.println("Result2: " + result2);
+        System.out.println("Result1: " + result1); // 3.0
+        System.out.println("Result2: " + result2); // 3.333333
 
     }
 

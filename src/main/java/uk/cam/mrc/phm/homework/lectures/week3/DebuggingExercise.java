@@ -9,7 +9,7 @@ public class DebuggingExercise {
     }
 
     public static void printNumberSeries(int num){
-        for (byte i = 0; i <= num; i+=2){
+        for (int i = 0; i <= num; i+=2){
             System.out.println(i);
         }
     }
