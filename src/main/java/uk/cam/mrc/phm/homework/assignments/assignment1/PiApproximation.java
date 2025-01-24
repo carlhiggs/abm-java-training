@@ -13,7 +13,7 @@ public class PiApproximation {
         // after more than 3000 expansions it was not similar.  These insights were gleaned
         // by modifying the POWER_OFFSET static variable.
         double piInitial = calculatePiInitial(INITIAL_POWER + POWER_OFFSET);
-        double piAlternative = calculatePiAlternartive(ALTERNATIVE_POWER + POWER_OFFSET);
+        double piAlternative = calculatePiAlternative(ALTERNATIVE_POWER + POWER_OFFSET);
         String[] prose = {
                 "Assignment 1: Pi approximation comparisons\n",
                 "Initial estimate (Equation 1): "+piInitial,
@@ -27,6 +27,7 @@ public class PiApproximation {
     }
 
     public static double calculatePiInitial(int i) {
+        final int CONSTANT = 12;
         double piMultiplier = 0;
         int denominatorMultiplier = 1;
         for (int p = 0; p < i; p++) {
@@ -34,12 +35,13 @@ public class PiApproximation {
             piMultiplier += (polarity / (double) (denominatorMultiplier * Math.pow(3,p)));
             denominatorMultiplier+=2;
         }
-        double pi = Math.sqrt(12) * piMultiplier;
+        double pi = Math.sqrt(CONSTANT) * piMultiplier;
 
         return pi;
     }
 
-    public static double calculatePiAlternartive(int j) {
+    public static double calculatePiAlternative(int j) {
+        final int CONSTANT = 4;
         double piMultiplier = 0;
         int denominatorMultiplier = 1;
         for (int p = 0; p < j; p++) {
@@ -47,7 +49,7 @@ public class PiApproximation {
             piMultiplier += (polarity / (double) denominatorMultiplier);
             denominatorMultiplier+=2;
         }
-        double pi = 4 * piMultiplier;
+        double pi = CONSTANT * piMultiplier;
 
         return pi;
     }

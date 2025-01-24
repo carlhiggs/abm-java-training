@@ -11,8 +11,23 @@ public class VehicleRunner {
         bike1.makeNoise();
 
         Bike bike2 = new Bike();
+        bike2.transportPersons();
+        bike2.transportGoods();
         bike2.makeNoise();
 
+        Car mitsubishi = new Car();
+        mitsubishi.size = 62;
+        mitsubishi.color="canary";
+        mitsubishi.transportPersons();
+        mitsubishi.transportGoods();
+        mitsubishi.makeNoise();
+
+        Train upfieldNo19 = new Train();
+        upfieldNo19.size = 387;
+        upfieldNo19.color = "forest";
+        upfieldNo19.transportPersons();
+        upfieldNo19.transportGoods();
+        upfieldNo19.makeNoise();
 
 
     }
