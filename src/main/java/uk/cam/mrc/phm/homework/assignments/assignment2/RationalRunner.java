@@ -21,6 +21,10 @@ public class RationalRunner {
         rational2.negate();
         rational2.printRational();
 
+        // Demonstrate the invert() method
+        rational2.invert();
+        rational2.printRational();
+
         // Demonstrate the non-destructive toDouble() method
         System.out.println(rational2.toDouble());
         rational2.printRational();

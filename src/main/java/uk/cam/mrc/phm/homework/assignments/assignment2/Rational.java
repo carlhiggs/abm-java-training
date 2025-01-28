@@ -34,7 +34,14 @@ public class Rational {
     }
 
     public void negate(){
-        this.numerator = -1 * this.numerator;
+        this.numerator = -this.numerator;
+    }
+
+    public void invert() {
+        int numerator = this.denominator;
+        int denominator = this.numerator;
+        this.numerator = numerator;
+        this.denominator = denominator;
     }
 
     public double toDouble() {
