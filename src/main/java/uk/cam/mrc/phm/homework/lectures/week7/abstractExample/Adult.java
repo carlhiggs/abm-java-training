@@ -15,6 +15,12 @@ public class Adult extends Person {
     public Adult (){
         super (null, 0);
     }
+
+    @Override
+    public void drink() {
+        System.out.println("I can drink alcohol");
+    }
+
     public void drive() {
         System.out.println("...... can drive.");
     }

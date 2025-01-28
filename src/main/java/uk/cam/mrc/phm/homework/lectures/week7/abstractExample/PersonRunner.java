@@ -5,7 +5,7 @@ public class PersonRunner {
 
         Person tom1 = new Adult();
 
-        Person tom2 = new Person();
+        Person tom2 = new Adult();
 
     }
 }

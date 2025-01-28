@@ -13,6 +13,12 @@ public class Child extends Person {
     public Child() {
         super(null, 0);
     }
+
+    @Override
+    public void drink() {
+        System.out.println("I cannot drink alcohol.");
+    }
+
     @Override
     public void introduceSelf() {
         super.introduceSelf();

@@ -1,6 +1,6 @@
 package uk.cam.mrc.phm.homework.lectures.week7.abstractExample;
 
-public class Person {
+abstract public class Person {
     private String name;
     private int age;
     public Person(String name, int age) {
@@ -21,9 +21,7 @@ public class Person {
     public void eat() {
         System.out.println("...... can eat.");
     }
-    public void drink() {
-        System.out.println("...... can drink.");
-    }
+    abstract public void drink();
     public void introduceSelf() {
         System.out.println("My name is " + this.name + ".");
         System.out.println("I am " + this.age + " years old.");
