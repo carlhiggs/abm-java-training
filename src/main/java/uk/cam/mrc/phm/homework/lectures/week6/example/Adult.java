@@ -18,10 +18,10 @@ public class Adult extends Person{
     @Override
     public void drink() {
         super.drink();
-        System.out.println("...... can drink alcohol.");
+        System.out.println(super.getName() + " can drink alcohol.");
     }
     public void drive() {
-        System.out.println("...... can drive.");
+        System.out.println(super.getName() + " can drive.");
     }
     public boolean hasDrivingLicense() {
         return holdingDrivingLicense;

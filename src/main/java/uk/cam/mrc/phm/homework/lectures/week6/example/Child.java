@@ -16,6 +16,6 @@ public class Child extends Person {
     @Override
     public void drink() {
         super.drink();
-        System.out.println("...... cannot drink alcohol.");
+        System.out.println(super.getName()+" cannot drink alcohol.");
     }
 }

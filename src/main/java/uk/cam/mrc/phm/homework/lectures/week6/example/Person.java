@@ -17,10 +17,10 @@ public class Person {
         this(null, 0);
     }
     public void eat() {
-        System.out.println("...... can eat.");
+        System.out.println(this.getName() + " can eat.");
     }
     public void drink() {
-        System.out.println("...... can drink.");
+        System.out.println(this.getName() + " can drink.");
     }
     public String getName() {
         return name;
