@@ -28,13 +28,13 @@ public class CollectionsExample {
         agents.add(new Agent(30, 1.7));
         System.out.println(agents);
 
-/*        //Shuffle the agent array list
+        //Shuffle the agent array list
         Collections.shuffle(agents);
         System.out.println(agents);
 
-        //Sort the agent array list
+        //Sort the agent array list (by height)
         Collections.sort(agents);
-        System.out.println(agents);*/
+        System.out.println(agents);
 
     }
 }

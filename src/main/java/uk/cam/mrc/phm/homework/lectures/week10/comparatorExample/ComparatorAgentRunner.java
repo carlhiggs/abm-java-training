@@ -19,7 +19,7 @@ public class ComparatorAgentRunner {
 
         //Todo: uncomment the following code and create a new Comparator using the height_m in the Agent class
         //Sort the integer array list by height_m
-        //Collections.sort(agents, new HeightAgentComparator());
-        //System.out.println(agents);
+        Collections.sort(agents, new HeightAgentComparator());
+        System.out.println(agents);
     }
 }

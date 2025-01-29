@@ -10,7 +10,8 @@ public class FileReaderExample {
         String filePath = "scenarios/homework/week12/Error.txt";
         String outputPath = "Error_output.txt";
         readData(filePath);
-        //writeData(outputPath);
+        //
+        // writeData(outputPath);
     }
 
     private static void writeData(String path) {

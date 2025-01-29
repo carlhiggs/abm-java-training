@@ -12,15 +12,15 @@ public class HashSetMethodsExample {
 
 /*        //addAll()
         stringSet1.addAll(stringSet2);
-        System.out.println(stringSet1);*/
+        System.out.println("Union: " + stringSet1);*/
 
 /*        //retainAll()
         stringSet1.retainAll(stringSet2);
-        System.out.println(stringSet1);*/
+        System.out.println("Intersection: " + stringSet1);*/
 
 /*        //removeAll()
         stringSet1.removeAll(stringSet2);
-        System.out.println(stringSet1);*/
+        System.out.println("Difference: " + stringSet1);*/
 
     }
 }

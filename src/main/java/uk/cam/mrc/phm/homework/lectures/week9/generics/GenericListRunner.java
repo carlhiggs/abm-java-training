@@ -5,7 +5,7 @@ public class GenericListRunner {
         GenericList<Integer> integerGenericList = new GenericList<Integer>();
         integerGenericList.add(1);
         //integerGenericList.add("1");
-        //integerGenericList.add(new Car());
+//        integerGenericList.add(new Car());
 
         GenericList<Car> carGenericList = new GenericList<>();
         carGenericList.add(new Car());

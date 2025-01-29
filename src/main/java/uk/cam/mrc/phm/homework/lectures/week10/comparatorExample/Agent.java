@@ -1,6 +1,6 @@
 package uk.cam.mrc.phm.homework.lectures.week10.comparatorExample;
 
-public class Agent{
+public class Agent {
 
     private int age;
     private double height_m;
@@ -17,8 +17,6 @@ public class Agent{
                 ", height_m=" + height_m +
                 '}';
     }
-
-
 
     public int getAge() {
         return age;

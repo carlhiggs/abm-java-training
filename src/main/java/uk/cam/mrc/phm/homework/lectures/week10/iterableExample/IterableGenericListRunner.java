@@ -10,9 +10,9 @@ public class IterableGenericListRunner {
         stringList.add("c");
 
         //for-each loop
-//        for (String item : stringList) {
-//            System.out.println(item);
-//        }
+        for (String item : stringList) {
+            System.out.println(item);
+        }
 
         //Iterator alternative
         for (Iterator<String> it = stringList.iterator(); it.hasNext(); ) {
@@ -21,6 +21,16 @@ public class IterableGenericListRunner {
         }
 
         //Todo - please write a while loop and use hasNext() and next() methods to print the stringList
+        int i = 0;
+        while (i < stringList.count) {
+            System.out.println(stringList.get(i));
+            i++;
+        }
 
+        // actual answer
+        Iterator<String> it = stringList.iterator();
+        while (it.hasNext()) {
+            System.out.println(it.next());
+        }
     }
 }

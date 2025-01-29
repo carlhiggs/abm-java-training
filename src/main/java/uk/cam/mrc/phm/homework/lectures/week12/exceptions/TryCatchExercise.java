@@ -1,5 +1,6 @@
 package uk.cam.mrc.phm.homework.lectures.week12.exceptions;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TryCatchExercise {
@@ -11,12 +12,16 @@ public class TryCatchExercise {
         System.out.println("--------------------------------");
         System.out.println("Please select your action: ");
 
-        int index;
-        boolean isInvalid;
+        int index = 0;
+        boolean isInvalid = true;
         do {
-            Scanner input = new Scanner(System.in);
-            index = input.nextInt();
-            isInvalid = false;
+            try {
+                Scanner input = new Scanner(System.in);
+                index = input.nextInt();
+                isInvalid = false;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input, please enter a number");
+            }
 
         } while (isInvalid);
 
