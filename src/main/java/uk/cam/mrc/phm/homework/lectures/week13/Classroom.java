@@ -1,7 +1,5 @@
 package uk.cam.mrc.phm.homework.lectures.week13;
 
-import java.util.Random;
-
 public class Classroom {
     // The java class information needs to be documented into an XML file, the following elements are
     // included:
@@ -10,8 +8,8 @@ public class Classroom {
     // Please interpret this into a proper hierarchical structure, then using XMLStreamWriter to create a
     // javaClass.xml file to store these information properly
 
-    private Student[] students;
-    private String[] supervisors;
+    private final Student[] students;
+    private final String[] supervisors;
 
     public Classroom(String[] studentNames, String[] supervisors) {
         this.students = new Student[studentNames.length];

@@ -1,7 +1,5 @@
 package uk.cam.mrc.phm.homework.lectures.week13;
 
-import java.util.Arrays;
-import java.util.Random;
 import com.sun.xml.txw2.output.IndentingXMLStreamWriter;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -29,7 +27,6 @@ public class javaClassXmlExercise {
         Classroom classroom = new Classroom(studentNames, supervisorNames);
         Student[] students = classroom.getStudents();
         String[] supervisors = classroom.getSupervisors();
-        String currentDir = System.getProperty("user.dir");
         File reportXmlOutputFile = new File("scenarios/homework/week13/javaClassStudentReports.xml");
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
         try {
