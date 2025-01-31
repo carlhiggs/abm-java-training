@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<classroom>
+  <supervisors>
+    <supervisor name="Professor X"/>
+    <supervisor name="Professor Y"/>
+    <supervisor name="Professor Z"/>
+  </supervisors>
+  <students>
+    <student id="0" name="Valentina A" grade="5"/>
+    <student id="1" name="Miguel B" grade="3"/>
+    <student id="2" name="Jorge C" grade="1"/>
+    <student id="3" name="Javier D" grade="2"/>
+    <student id="4" name="Joaquin E" grade="4"/>
+    <student id="5" name="Jose F" grade="0"/>
+    <student id="6" name="Juan G" grade="5"/>
+    <student id="7" name="Julia H" grade="2"/>
+    <student id="8" name="Julieta I" grade="2"/>
+    <student id="9" name="Julian J" grade="5"/>
+    <student id="10" name="Julio K" grade="4"/>
+    <student id="11" name="Jürgen L" grade="3"/>
+    <student id="12" name="Karl M" grade="3"/>
+    <student id="13" name="Karla N" grade="1"/>
+    <student id="14" name="Karol O" grade="5"/>
+    <student id="15" name="Katarina P" grade="3"/>
+    <student id="16" name="Katerina Q" grade="5"/>
+    <student id="17" name="Katharina R" grade="2"/>
+    <student id="18" name="Xiaoqi S" grade="2"/>
+    <student id="19" name="Xiaoyan T" grade="2"/>
+  </students>
+</classroom>

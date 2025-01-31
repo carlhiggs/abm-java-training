@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<building type="residential" name="Happy" constructionYear="2014">
+    <households>
+        <household id="1">
+            <residents>
+                <person id="1" name="aa" age="30" nationality="German"/>
+            </residents>
+        </household>
+        <household id="2">
+            <residents>
+                <person id="2" name="bb" age="40" nationality="Other"/>
+                <person id="3" name="cc" age="40" nationality="German"/>
+            </residents>
+        </household>
+        <household id="2">
+            <residents>
+                <person id="4" name="dd" age="20" nationality="Other"/>
+            </residents>
+        </household>
+    </households>
+</building>
