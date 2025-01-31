@@ -2,6 +2,11 @@ package uk.cam.mrc.phm.homework.lectures.week13;
 
 import com.sun.xml.txw2.output.IndentingXMLStreamWriter;
 
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -17,6 +22,8 @@ public class javaClassXmlExercise {
     // Please interpret this into a proper hierarchical structure, then using XMLStreamWriter to create a
     // javaClass.xml file to store these information properly
 
+    private static final Logger LOGGER = Logger.getLogger(javaClassXmlExercise.class.getName());
+
     public static void main(String[] args) {
         final String[] studentNames = {"Valentina A", "Miguel B", "Jorge C", "Javier D", "Joaquin E", "Jose F", "Juan G", "Julia H", "Julieta I", "Julian J", "Julio K", "Jürgen L", "Karl M", "Karla N", "Karol O", "Katarina P", "Katerina Q", "Katharina R", "Xiaoqi S", "Xiaoyan T"};
         final String[] supervisorNames = {"Professor X", "Professor Y", "Professor Z"};
@@ -25,41 +32,43 @@ public class javaClassXmlExercise {
 
     public static void writeClassReportXML(String[] studentNames, String[] supervisorNames) {
         Classroom classroom = new Classroom(studentNames, supervisorNames);
-        Student[] students = classroom.getStudents();
+        List<Map<String, String>> students = classroom.getStudents();
         String[] supervisors = classroom.getSupervisors();
         File reportXmlOutputFile = new File("scenarios/homework/week13/javaClassStudentReports.xml");
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
         try {
             XMLStreamWriter writer = factory.createXMLStreamWriter(new FileWriter(reportXmlOutputFile));
             XMLStreamWriter writerIndenting = new IndentingXMLStreamWriter(writer);
-
-            //write header
             writerIndenting.writeStartDocument("utf-8", "1.0");
-
             writerIndenting.writeStartElement("classroom");
-
-            writerIndenting.writeStartElement("supervisors");
-            for (String supervisor : supervisors) {
-                writerIndenting.writeStartElement("supervisor");
-                writerIndenting.writeAttribute("name", supervisor);
-                writerIndenting.writeEndElement();
-            }
-            writerIndenting.writeEndElement();
-
-            writerIndenting.writeStartElement("students");
-            for (Student student : students) {
-                writerIndenting.writeStartElement("student");
-                writerIndenting.writeAttribute("id", String.valueOf(student.getId()));
-                writerIndenting.writeAttribute("name", student.getName());
-                writerIndenting.writeAttribute("grade", String.valueOf(student.getGrade()));
-                writerIndenting.writeEndElement();
-            }
-            writerIndenting.writeEndElement();
-
+            writeXmlSection(writerIndenting, "supervisors", "supervisor", supervisors);
+            writeXmlSection(writerIndenting, "students", "student", students);
             writerIndenting.writeEndElement();
             writerIndenting.writeEndDocument();
         } catch (IOException | XMLStreamException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error writing XML file", e);
         }
+    }
+
+    private static void writeXmlSection(XMLStreamWriter writerIndenting, String section, String label, String[] content) throws XMLStreamException {
+        writerIndenting.writeStartElement(section);
+        for (String i : content) {
+            writerIndenting.writeStartElement(label);
+            writerIndenting.writeCharacters(i);
+            writerIndenting.writeEndElement();
+        }
+        writerIndenting.writeEndElement();
+    }
+
+    private static void writeXmlSection(XMLStreamWriter writerIndenting, String section, String label, List<Map<String, String>> content) throws XMLStreamException {
+        writerIndenting.writeStartElement(section);
+        for (Map<String, String> i : content) {
+            writerIndenting.writeStartElement(label);
+            for (Map.Entry<String, String> attribute : i.entrySet()) {
+                writerIndenting.writeAttribute(attribute.getKey(), attribute.getValue());
+                }
+            writerIndenting.writeEndElement();
+        }
+        writerIndenting.writeEndElement();
     }
 }

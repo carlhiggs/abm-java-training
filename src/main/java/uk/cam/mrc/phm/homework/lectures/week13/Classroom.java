@@ -1,5 +1,8 @@
 package uk.cam.mrc.phm.homework.lectures.week13;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Classroom {
     // The java class information needs to be documented into an XML file, the following elements are
     // included:
@@ -20,8 +23,12 @@ public class Classroom {
         }
     }
 
-    public Student[] getStudents() {
-        return this.students;
+    public List<java.util.Map<String, String>> getStudents() {
+        List<java.util.Map<String, String>> studentList = new ArrayList<>();
+        for (Student student : this.students) {
+            studentList.add(student.getStudent());
+        }
+        return studentList;
     }
 
     public String[] getSupervisors() {

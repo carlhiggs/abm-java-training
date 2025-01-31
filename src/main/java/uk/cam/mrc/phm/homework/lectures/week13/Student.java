@@ -1,5 +1,7 @@
 package uk.cam.mrc.phm.homework.lectures.week13;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Student {
@@ -30,5 +32,13 @@ public class Student {
     public void gradeStudent() {
         Random random = new Random();
         this.grade = random.nextInt(6);
+    }
+
+    public Map<String, String> getStudent() {
+        Map<String, String> studentData = new LinkedHashMap<>();
+        studentData.put("id", String.valueOf(this.id));
+        studentData.put("name", this.name);
+        studentData.put("grade", String.valueOf(this.grade));
+        return studentData;
     }
 }
